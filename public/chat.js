@@ -42,6 +42,33 @@ socket.on('created', function() {
             userVideo.onloadedmetadata = function(e) {
                 userVideo.play();
             };
+        })
+        .catch(function() {
+
+        });
+});
+
+
+socket.on('roomFull', function() {
+    alert('Room is full, cannot join.');
+});
+socket.on('joined', function() {
+    console.log('Room is joined');
+    creator = false;
+
+    navigator.mediaDevices.
+    getUserMedia({ audio: false, video: { width: 1280, height: 720 } }).
+    then(function(stream) {
+            userStream = stream;
+
+            userVideo.srcObject = stream;
+            userVideo.onloadedmetadata = function(e) {
+                userVideo.play();
+            };
+            userVideo.srcObject = stream;
+            userVideo.onloadedmetadata = function(e) {
+                userVideo.play();
+            };
 
             socket.emit('ready', roomName);
 
@@ -50,6 +77,7 @@ socket.on('created', function() {
 
         });
 });
+
 socket.on('alreadyJoined', function() {
     alert('You cannot join room twice.');
 });
